@@ -13,4 +13,4 @@ def _matToDataFrame(url):
 
 mat_ids = ['74036','74037','74038','74039','74040','74041']
 schedule = pd.concat(([_matToDataFrame('https://newbreedbjj.smoothcomp.com/en/event/12651/schedule/new/mat/{mat_id}/matches.json?upcoming=true'.format(mat_id=mat_id)) for mat_id in mat_ids]))
-st.dataframe(schedule.sort_values(by=['Estimated Start Time'],key=lambda col: pd.to_datetime('20231209 ' + schedule['Estimated Start Time'], format='%Y%m%d %I:%M %p'), ascending=True), hide_index=True, , use_container_width=True)
+st.dataframe(schedule.sort_values(by=['Estimated Start Time'],key=lambda col: pd.to_datetime('20231209 ' + schedule['Estimated Start Time'], format='%Y%m%d %I:%M %p'), ascending=True), hide_index=True, use_container_width=True)
