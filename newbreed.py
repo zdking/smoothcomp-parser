@@ -8,7 +8,7 @@ import streamlit as st
 def _matToDataFrame(url):
     df = pd.json_normalize(requests.get(url).json(), record_path='seats', meta=["mat_match_nr","estimated_start"])
     df['mat_match_nr'] = df['mat_match_nr'].apply(lambda x: x[:1])
-    df = df.query('club == "Gracie Brandon"').drop(columns=['isWinner','image','type','country','event_registration_id','affiliation', 'status','approved','club']).rename(columns={'name': 'Fighter Name', 'estimated_start': 'Estimated Start Time', 'mat_match_nr' : 'Mat'})
+    df = df.query('club == "Gracie Brandon"').rename(columns={'name': 'Fighter Name', 'estimated_start': 'Estimated Start Time', 'mat_match_nr' : 'Mat'})
     return df[['Estimated Start Time', 'Mat', 'Fighter Name']]
 
 mat_ids = ['74036','74037','74038','74039','74040','74041']
