@@ -3,6 +3,7 @@ import requests
 import time
 import pandas as pd
 import streamlit as st
+from pytz import timezone
 
 
 def _urlToDataFrame(url):
@@ -66,7 +67,7 @@ def _displaySchedule(layout):
         layout["row3"].table(schedule)
         layout["row1"].write(
             "Last Refresh: {lastRefresh}".format(
-                lastRefresh=datetime.now().strftime("%H:%M:%S")
+                lastRefresh=datetime.now(timezone("EST").strftime("%H:%M:%S")
             )
         )
 
