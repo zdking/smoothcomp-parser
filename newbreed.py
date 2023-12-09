@@ -55,7 +55,7 @@ def _matsToDataFrame(matIds):
         by=["Estimated Start Time"],
         key=lambda col: pd.to_datetime("20231209 " + col, format="%Y%m%d %I:%M %p"),
         ascending=True,
-    )
+    ).reset_index(drop=True)
 
 
 matIds = ["74036", "74037", "74038", "74039", "74040", "74041"]
