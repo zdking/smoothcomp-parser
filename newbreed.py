@@ -31,34 +31,25 @@ def _matToDataFrame(url):
     )
 
 
-def _updateColumnDisplayNames(matAsDataFrame):
-    return matAsDataFrame.rename(
-        columns={
-            "name": "Fighter Name",
-            "estimated_start": "Estimated Start Time",
-            "mat_match_nr": "Mat",
-        }
-    )
-
-
 def _matsToDataFrame(matIds):
-    return pd.concat(
-        (
-            [
-                _matToDataFrame(
-                    f"https://newbreedbjj.smoothcomp.com/en/event/12651/schedule/new/mat/{matId}/matches.json?upcoming=true"
-                )
-                for matId in matIds
-            ]
+    return (
+        pd.concat(
+            (
+                [
+                    _matToDataFrame(
+                        f"https://newbreedbjj.smoothcomp.com/en/event/12651/schedule/new/mat/{matId}/matches.json?upcoming=true"
+                    )
+                    for matId in matIds
+                ]
+            )
         )
-    ).sort_values(
-        by=["Estimated Start Time"],
-        key=lambda col: pd.to_datetime("20231209 " + col, format="%Y%m%d %I:%M %p"),
-        ascending=True,
-    ).reset_index(drop=True)
-
-
-matIds = ["74036", "74037", "74038", "74039", "74040", "74041"]
+        .sort_values(
+            by=["Estimated Start Time"],
+            key=lambda col: pd.to_datetime("20231209 " + col, format="%Y%m%d %I:%M %p"),
+            ascending=True,
+        )
+        .reset_index(drop=True)
+    )
 
 
 def _displaySchedule(layout):
