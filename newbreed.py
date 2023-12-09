@@ -66,7 +66,7 @@ def _displaySchedule(layout):
             status.update(label=f"Next Refresh: {seconds} second(s)", state="running")
             time.sleep(1)
 
-        loadingText = "Refreshing Schedule..."
+        layout["loadingText"] = "Refreshing Schedule..."
 
 
 layout = {
@@ -75,6 +75,6 @@ layout = {
     "row3": st.empty(),
     "loadingText": "Loading Schedule...",
 }
-
+matIds = ["74036", "74037", "74038", "74039", "74040", "74041"]
 while True:
     _displaySchedule(layout)
