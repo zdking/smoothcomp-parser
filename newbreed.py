@@ -12,7 +12,9 @@ def _urlToDataFrame(url):
         record_path="seats",
         meta=["mat_match_nr", "estimated_start"],
     )
-    dataFrame["mat_match_nr"] = dataFrame["mat_match_nr"].map(lambda x: x[:1])
+    if dataFrame is not None:
+        dataFrame["mat_match_nr"] = dataFrame["mat_match_nr"].map(lambda x: x[:1])
+    
     return dataFrame
 
 
