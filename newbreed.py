@@ -13,6 +13,7 @@ def _urlToDataFrame(url):
         record_path="seats",
         meta=["mat_match_nr", "estimated_start"],
     )
+    
     if dataFrame.empty == False:
         dataFrame["mat_match_nr"] = dataFrame["mat_match_nr"].map(lambda x: x[:1])
 
@@ -42,7 +43,7 @@ def _matsToDataFrame(matIds):
         (
             [
                 _matToDataFrame(
-                    f"https://newbreedbjj.smoothcomp.com/en/event/12651/schedule/new/mat/{matId}/matches.json?upcoming=true"
+                    f"https://newbreedbjj.smoothcomp.com/en/event/13776/schedule/new/mat/{matId}/matches.json?upcoming=true"
                 )
                 for matId in matIds
             ]
@@ -51,7 +52,7 @@ def _matsToDataFrame(matIds):
     if dataFrame.empty == False:
         dataFrame = dataFrame.sort_values(
             by=["Estimated Start Time"],
-            key=lambda col: pd.to_datetime("20231209 " + col, format="%Y%m%d %I:%M %p"),
+            key=lambda col: pd.to_datetime("20240210 " + col, format="%Y%m%d %I:%M %p"),
             ascending=True,
         ).reset_index(drop=True)
 
@@ -75,7 +76,7 @@ def _displaySchedule(layout):
         layout["loadingText"] = "Refreshing Schedule..."
 
 
-matIds = ["74036", "74037", "74038", "74039", "74040", "74041"]
+matIds = ["80427", "80428", "80429", "80430", "80431", "93236"]
 layout = {
     "row1": st.empty(),
     "row2": st.empty(),
