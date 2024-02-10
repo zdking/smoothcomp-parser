@@ -47,7 +47,7 @@ def _matToDataFrame(url):
 
 
 def _matsToDataFrame(matIds):
-    dataFrame = pd.concat(
+    return pd.concat(
         (
             [
                 _matToDataFrame(
@@ -58,14 +58,6 @@ def _matsToDataFrame(matIds):
             ]
         )
     )
-    if dataFrame.empty == False:
-        dataFrame = dataFrame.sort_values(
-            by=["Estimated Start Time"],
-            key=lambda col: pd.to_datetime("20240210 " + col, format="%Y%m%d %I:%M %p"),
-            ascending=True,
-        ).reset_index(drop=True)
-
-    return dataFrame
 
 
 def _displaySchedule(layout):
@@ -76,7 +68,16 @@ def _displaySchedule(layout):
             tab1, tab2 = st.tabs(["Upcoming", "Completed"])
             with tab1:
                 st.table(
-                    allData.query('State != "finished"').loc[
+                    allData.query('State != "finished"')
+                    .sort_values(
+                        by=["Estimated Start Time"],
+                        key=lambda col: pd.to_datetime(
+                            "20240210 " + col, format="%Y%m%d %I:%M %p"
+                        ),
+                        ascending=True,
+                    )
+                    .reset_index(drop=True)
+                    .loc[
                         :,
                         ["Estimated Start Time", "Mat", "Fighter Name", "Match Type"],
                     ]
@@ -84,6 +85,14 @@ def _displaySchedule(layout):
             with tab2:
                 st.table(
                     allData.query('State == "finished"')
+                    .sort_values(
+                        by=["Estimated Start Time"],
+                        key=lambda col: pd.to_datetime(
+                            "20240210 " + col, format="%Y%m%d %I:%M %p"
+                        ),
+                        ascending=False,
+                    )
+                    .reset_index(drop=True)
                     .rename(
                         columns={
                             "Estimated Start Time": "Match Time",
