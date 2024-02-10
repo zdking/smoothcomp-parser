@@ -4,6 +4,7 @@ import time
 import pandas as pd
 import streamlit as st
 import numpy as np
+import re
 from pytz import timezone
 
 
@@ -17,6 +18,9 @@ def _urlToDataFrame(url):
     if dataFrame.empty == False:
         dataFrame = dataFrame.astype({"isWinner": str})
         dataFrame["mat_match_nr"] = dataFrame["mat_match_nr"].map(lambda x: x[:1])
+        dataFrame["group"] = dataFrame["group"].map(
+            lambda x: "Gi" if re.search("no-gi", x, re.IGNORECASE) is None else "No-Gi"
+        )
         dataFrame["isWinner"] = dataFrame["isWinner"].map(
             lambda x: "WON" if x == "True" else "LOST"
         )
@@ -35,7 +39,7 @@ def _matToDataFrame(url):
                 "state": "State",
                 "isWinner": "Win/Loss",
                 "wonBy": "Win/Loss by",
-                "group": "Bracket",
+                "group": "Match Type",
             }
         )
 
@@ -74,7 +78,7 @@ def _displaySchedule(layout):
                 st.table(
                     allData.query('State != "finished"').loc[
                         :,
-                        ["Estimated Start Time", "Mat", "Fighter Name", "Bracket"],
+                        ["Estimated Start Time", "Mat", "Fighter Name", "Match Type"],
                     ]
                 )
             with tab2:
@@ -91,7 +95,7 @@ def _displaySchedule(layout):
                             "Match Time",
                             "Mat",
                             "Fighter Name",
-                            "Bracket",
+                            "Match Type",
                             "Win/Loss",
                             "Win/Loss by",
                         ],
