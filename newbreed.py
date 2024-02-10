@@ -11,7 +11,7 @@ def _urlToDataFrame(url):
     dataFrame = pd.json_normalize(
         requests.get(url).json(),
         record_path="seats",
-        meta=["mat_match_nr", "estimated_start", "state", "wonBy"],
+        meta=["mat_match_nr", "estimated_start", "state", "wonBy", "group"],
     )
 
     if dataFrame.empty == False:
@@ -35,6 +35,7 @@ def _matToDataFrame(url):
                 "state": "State",
                 "isWinner": "Win/Loss",
                 "wonBy": "Win/Loss by",
+                "group": "Bracket",
             }
         )
 
@@ -73,7 +74,7 @@ def _displaySchedule(layout):
                 st.table(
                     allData.query('State != "finished"').loc[
                         :,
-                        ["Estimated Start Time", "Mat", "Fighter Name"],
+                        ["Estimated Start Time", "Mat", "Fighter Name", "Bracket"],
                     ]
                 )
             with tab2:
@@ -90,6 +91,7 @@ def _displaySchedule(layout):
                             "Match Time",
                             "Mat",
                             "Fighter Name",
+                            "Bracket",
                             "Win/Loss",
                             "Win/Loss by",
                         ],
