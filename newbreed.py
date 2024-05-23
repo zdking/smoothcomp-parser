@@ -1,15 +1,14 @@
 from datetime import datetime
+import urllib.parse
 import requests
 import time
 import pandas as pd
 import streamlit as st
 import numpy as np
 import re
-from pytz import timezone
-from bs4 import BeautifulSoup as bs
+import pytz
 import json
-from urllib.parse import urlparse
-from urllib.parse import urljoin
+import urllib
 
 
 def _urlToDataFrame(url):
@@ -110,7 +109,7 @@ def _displaySchedule(layout, matUrls):
         with layout["row1"] as row1:
             st.write(
                 "Last Refresh: {lastRefresh}".format(
-                    lastRefresh=datetime.now(timezone("EST")).strftime("%H:%M:%S")
+                    lastRefresh=datetime.now(pytz.timezone("EST")).strftime("%H:%M:%S")
                 )
             )
 
@@ -125,18 +124,18 @@ def _displaySchedule(layout, matUrls):
 
 def _getUrlsForEvent(eventPath: str):
     response = requests.get(
-        urljoin(urlBase, f"{eventPath}/schedule/new/matcategories.json")
+        urllib.parse.urljoin(urlBase, f"{eventPath}/schedule/new/matcategories.json")
     )
     if response.status_code == 200:
         matCategoryId = response.json()[0]["id"]
-        matsUrl = urljoin(
+        matsUrl = urllib.parse.urljoin(
             urlBase, f"{eventPath}/schedule/new/mats.json/{matCategoryId}"
         )
         response = requests.get(matsUrl)
 
         _monitorEvent(
             [
-                urljoin(
+                urllib.parse.urljoin(
                     urlBase,
                     f"{eventPath}/schedule/new/mat/{mat['id']}/matches.json",
                 )
@@ -164,8 +163,8 @@ def _monitorEvent(matUrls):
 
 
 urlBase = "https://newbreedbjj.smoothcomp.com"
-newEventsUrl = urljoin(urlBase, "/en/federation/65/events/upcoming")
-pastEventsUrl = urljoin(urlBase, "/en/federation/65/events/past")
+newEventsUrl = urllib.parse.urljoin(urlBase, "/en/federation/65/events/upcoming")
+pastEventsUrl = urllib.parse.urljoin(urlBase, "/en/federation/65/events/past")
 
 layout = {
     "row0": st.empty(),
